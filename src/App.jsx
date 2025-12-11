@@ -9,6 +9,7 @@ import WhyUs from './components/WhyUs';
 import CompanyHistory from './components/CompanyHistory';
 import Process from './components/Process';
 import Testimonials from './components/Testimonials';
+import Chatbot from './components/Chatbot';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -27,6 +28,7 @@ function App() {
         <Process />
         <Testimonials />
         <Contact />
+        <Chatbot />
       </main>
       <Footer />
     </>
