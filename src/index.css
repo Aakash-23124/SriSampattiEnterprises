@@ -1244,6 +1244,154 @@ ul {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+.error {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* ===============================
+   Natural Material Floating Labels
+   =============================== */
+
+.form-floating {
+    position: relative;
+    margin-bottom: 1.75rem;
+}
+
+/* Input & Textarea */
+.form-floating input,
+.form-floating textarea {
+    width: 100%;
+    padding: 18px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+    background-color: var(--white);
+    transition: border-color 0.25s ease;
+    color: #000000;
+}
+
+.form-floating textarea {
+    min-height: 50px;
+    resize: vertical;
+}
+
+/* Phone input group */
+.phone-input-group {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--white);
+    transition: border-color 0.25s ease;
+}
+
+.phone-input-group:focus-within {
+    border-color: var(--primary-color);
+}
+
+.phone-input-group select {
+    flex-shrink: 0;
+    width: 110px;
+    padding: 18px 12px;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    background-color: transparent;
+    outline: none;
+    position: relative;
+}
+
+.phone-input-group select::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background-color: var(--border-color);
+}
+
+.phone-input-group input {
+    flex: 1;
+    padding: 18px 14px;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    background-color: transparent;
+    outline: none;
+}
+
+.form-floating input:focus,
+.form-floating input:hover,
+.form-floating textarea:focus,
+.form-floating textarea:hover,
+.form-floating:focus-within input,
+.form-floating:focus-within textarea,
+.form-floating:hover input,
+.form-floating:hover textarea {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Hide placeholder visually (keep for logic) */
+.form-floating input::placeholder,
+.form-floating textarea::placeholder {
+    color: transparent;
+}
+
+/* Label – default */
+.form-floating label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: #64748b;
+    pointer-events: none;
+    padding: 0 6px;
+    background-color: var(--white);
+    transition: all 0.25s ease;
+}
+
+/* Special for textarea */
+.form-floating textarea + label {
+    top: 18px;
+    transform: none;
+}
+
+/* Special for phone */
+.phone-floating label {
+    left: 124px;
+}
+
+/* Floating state */
+.form-floating input:focus + label,
+.form-floating input:hover + label,
+.form-floating input:not(:placeholder-shown) + label,
+.form-floating textarea:focus + label,
+.form-floating textarea:hover + label,
+.form-floating textarea:not(:placeholder-shown) + label,
+.phone-input-group input:focus + label,
+.phone-input-group input:hover + label,
+.phone-input-group input:not(:placeholder-shown) + label {
+    top: -4px;
+    font-size: 12.5px;
+    color: var(--primary-color);
+}
+
+/* Special floating left for phone */
+.phone-floating .phone-input-group input:focus + label,
+.phone-floating .phone-input-group input:hover + label,
+.phone-floating .phone-input-group input:not(:placeholder-shown) + label {
+    left: 124px;
+}
+
+
 /* Modal Styles */
 .modal-overlay {
     position: fixed;
@@ -1743,4 +1891,60 @@ ul {
     margin: 0 auto;
     border: 3px solid #fff;
     box-shadow: 0 0 0 1px #cbd5e1;
+}
+
+/* Mobile Call Buttons */
+.mobile-call-buttons {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-call-buttons {
+        display: block;
+    }
+
+    .mobile-call-floating {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: var(--white);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-call-floating:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    }
+
+    .mobile-call-sticky {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: var(--white);
+        text-decoration: none;
+        padding: 16px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 18px;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .mobile-call-sticky:hover {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, #1e40af 100%);
+    }
 }
