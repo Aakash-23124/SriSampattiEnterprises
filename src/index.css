@@ -2,39 +2,34 @@
 /* For now, we paste the original CSS content */
 
 :root {
-    /* Primary Brand Colors */
-    --primary-color: #2563EB;      /* Royal Blue */
-    --primary-dark: #1D4ED8;       /* Deep Blue (hover/gradient) */
+    /* Primary Accent (Buttons, highlights) */
+    --primary-color: #C25A3C;      /* Soft Clay */
+    --primary-dark: #9E4630;       /* Deep Clay */
 
-    /* Text & Headings */
-    --secondary-color: #1E293B;    /* Slate Navy (headings, footer bg) */
-    --text-color: #334155;         /* Cool Gray (body text) */
+    /* Headings & Titles */
+    --secondary-color: #3A2F2B;    /* Soft Brown */
+
+    /* Body text */
+    --text-color: #5F524C;
 
     /* Backgrounds */
     --white: #FFFFFF;
-    --light-bg: #F8FAFC;           /* Section backgrounds */
-    --hover-bg: #1D4ED8;           /* Used in hover cards */
+    --light-bg: #F6F1EB;           /* Warm sand */
 
-    /* Borders & Dividers */
-    --border-color: #E2E8F0;
+    /* Borders */
+    --border-color: #E2D8CF;
 
-    /* Accents */
-    --success-color: #22C55E;      /* Success / CTA highlight */
+    /* Subtle accent (icons, ticks only) */
+    --success-color: #C9A46A;      /* Muted gold */
 
-    /* Subtle Pattern */
-    --pattern-bg: radial-gradient(#E2E8F0 1px, transparent 1px);
-
-    /* Shadows */
-    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-
-    /* Layout */
-    --section-padding: 5rem 0;
-
-    /* Transitions */
-    --transition: all 0.3s ease;
+    /* Shadows (SOFT, NOT DRAMATIC) */
+    --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+    --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
 }
+
+
+
+
 
 
 * {
@@ -117,16 +112,20 @@ ul {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--white);
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    box-shadow: var(--btn-shadow);
 }
 
+
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, #1e40af 100%);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+    background: linear-gradient(135deg, var(--primary-dark), #6F2E24);
+    box-shadow: var(--btn-shadow-hover);
     transform: translateY(-2px);
 }
+
+
+
 
 .btn-outline {
     border-color: var(--primary-color);
@@ -198,7 +197,7 @@ ul {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 14px rgba(192, 86, 58, 0.35);
     padding: 1rem 0;
 }
 
@@ -1937,7 +1936,7 @@ ul {
 
     .mobile-call-floating:hover {
         transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+       box-shadow: 0 4px 14px rgba(192, 86, 58, 0.35);
     }
 
     .mobile-call-sticky {
@@ -2197,4 +2196,75 @@ ul {
     .product-image {
         height: 210px;
     }
+}
+
+/* ===============================
+   PRODUCTS – MOBILE TOUCH UX
+   =============================== */
+
+@media (max-width: 768px) {
+    .products-slider {
+        -webkit-overflow-scrolling: touch;   /* smooth iOS swipe */
+        scroll-snap-type: x mandatory;       /* clean snap */
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .slider-card {
+        scroll-snap-align: start;
+    }
+}
+
+/* =====================================
+   MOBILE SLIDER – FORCE TOUCH SCROLL
+   ===================================== */
+
+@media (max-width: 768px) {
+    .products-slider {
+        overflow-x: scroll !important;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;              /* 🔥 THIS IS THE KEY */
+        scroll-snap-type: x mandatory;
+    }
+
+    .slider-card {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+}
+
+/* ==================================================
+   PRODUCTS – MOBILE SCROLL FINAL OVERRIDE (LAST)
+   ================================================== */
+
+@media (max-width: 768px) {
+    .products {
+        overflow: visible;
+    }
+
+    .container {
+        overflow: visible;
+    }
+
+    .products-slider {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        touch-action: pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .slider-card {
+        min-width: 85vw;
+        max-width: 85vw;
+        flex-shrink: 0;
+    }
+}
+
+.nav-list a.active {
+  color: var(--primary-color);
+  font-weight: 600;
 }

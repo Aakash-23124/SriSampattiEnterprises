@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -14,6 +14,22 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
+
+  /* 🔹 BASIC ANALYTICS ENGINE */
+  useEffect(() => {
+    window.__analytics = {
+      track: (event, data = {}) => {
+        console.log('[Analytics]', {
+          event,
+          data,
+          timestamp: new Date().toISOString()
+        });
+      }
+    };
+
+    window.__analytics.track('page_load', { page: 'home' });
+  }, []);
+
   return (
     <>
       <Header />
@@ -30,15 +46,6 @@ function App() {
         <Contact />
         <Chatbot />
       </main>
-      {/* Mobile Call Buttons */}
-      <div className="mobile-call-buttons">
-        <a href="tel:+919515104922" className="mobile-call-floating">
-          📞
-        </a>
-        <a href="tel:+919515104922" className="mobile-call-sticky">
-          Call Now
-        </a>
-      </div>
       <Footer />
     </>
   );

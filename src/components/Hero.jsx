@@ -4,24 +4,41 @@ import factoryImage from '../assets/factory.png';
 
 const Hero = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [timeMessage, setTimeMessage] = useState("");
+    const [ctaText, setCtaText] = useState("Request Free Quote");
 
     const slides = [
         {
             image: heroImage,
             subtitle: "Trusted uPVC Solutions in Hyderabad",
             title: "Sri Sampatti Enterprises Pvt Ltd",
-            desc: "Delivering durable, energy-efficient, and modern uPVC window and door solutions for Indian homes and commercial spaces.",
-            isProduct: false
+            desc: "Delivering durable, energy-efficient, and modern uPVC window and door solutions for Indian homes and commercial spaces."
         },
         {
             image: factoryImage,
             subtitle: "Quality • Reliability • Performance",
             title: "Designed for Indian Living",
-            desc: "Engineered with advanced materials and global technology standards to ensure comfort, safety, and long-lasting performance.",
-            isProduct: false
+            desc: "Engineered with advanced materials and global technology standards to ensure comfort, safety, and long-lasting performance."
         }
     ];
 
+    /* 🔹 TIME-BASED MESSAGING */
+    useEffect(() => {
+        const hour = new Date().getHours();
+
+        if (hour >= 6 && hour < 12) {
+            setTimeMessage("Plan your home upgrades today");
+            setCtaText("Get Morning Consultation");
+        } else if (hour >= 12 && hour < 18) {
+            setTimeMessage("Upgrade your space with premium uPVC");
+            setCtaText("Request Free Quote");
+        } else {
+            setTimeMessage("Talk to our experts tomorrow");
+            setCtaText("Leave an Enquiry");
+        }
+    }, []);
+
+    /* 🔹 SLIDE AUTO ROTATION */
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -32,18 +49,32 @@ const Hero = () => {
     return (
         <section id="home" className="hero">
             <div className="container hero-container">
-                
+
                 {/* Hero Content */}
                 <div className="hero-content">
+
+                    {/* 🔹 Time-based micro message */}
                     <p
                         className="lead-text"
                         style={{
                             color: 'var(--primary-color)',
                             fontWeight: '600',
-                            fontSize: '1.2rem',
-                            marginBottom: '1rem',
+                            fontSize: '1.05rem',
+                            marginBottom: '0.5rem',
                             textTransform: 'uppercase',
                             letterSpacing: '1px'
+                        }}
+                    >
+                        {timeMessage}
+                    </p>
+
+                    {/* Existing slide subtitle */}
+                    <p
+                        style={{
+                            color: 'var(--secondary-color)',
+                            fontWeight: '600',
+                            fontSize: '1.1rem',
+                            marginBottom: '1rem'
                         }}
                     >
                         {slides[currentSlide].subtitle}
@@ -67,7 +98,7 @@ const Hero = () => {
 
                     <div className="hero-btns">
                         <a href="#contact" className="btn btn-primary">
-                            Request Free Quote
+                            {ctaText}
                         </a>
                         <a href="#products" className="btn btn-outline">
                             Explore Products
@@ -97,10 +128,7 @@ const Hero = () => {
                             key={index}
                             className={`slide-item ${index === currentSlide ? 'active' : ''}`}
                         >
-                            <img
-                                src={slide.image}
-                                alt={slide.title}
-                            />
+                            <img src={slide.image} alt={slide.title} />
                         </div>
                     ))}
 
