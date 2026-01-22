@@ -1,241 +1,236 @@
-import React, { useState, useEffect } from 'react';
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import React, { useState, useEffect } from "react";
 
 const Contact = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        location: '',
-        requirement: ''
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    location: "",
+    requirement: "",
+  });
 
-    const [errors, setErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [toast, setToast] = useState("");
 
-    /* 🔹 MOBILE DETECTION */
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+  /* 🔹 MOBILE DETECTION */
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-    const validate = () => {
-        let tempErrors = {};
+  /* 🔹 COPY HANDLER */
+  const copyText = (text) => {
+    navigator.clipboard.writeText(text);
+    setToast("Copied");
+    setTimeout(() => setToast(""), 1600);
+  };
 
-        if (!formData.name.trim()) {
-            tempErrors.name = "Name is required";
-        } else if (!/^[a-zA-Z\s]+$/.test(formData.name.trim())) {
-            tempErrors.name = "Name should contain only letters and spaces";
-        }
+  const validate = () => {
+    let tempErrors = {};
+    if (!formData.name.trim()) tempErrors.name = "Name is required";
+    if (!formData.phone.trim()) tempErrors.phone = "Phone is required";
+    if (!formData.location.trim()) tempErrors.location = "Location is required";
+    if (!formData.requirement.trim())
+      tempErrors.requirement = "Requirement is required";
 
-        if (!formData.phone.trim()) {
-            tempErrors.phone = "Phone is required";
-        } else if (!isValidPhoneNumber(formData.phone)) {
-            tempErrors.phone = "Enter a valid phone number";
-        }
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
 
-        if (!formData.location.trim()) {
-            tempErrors.location = "Location is required";
-        }
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+    setErrors({ ...errors, [id]: "" });
+  };
 
-        if (!formData.requirement.trim()) {
-            tempErrors.requirement = "Requirement is required";
-        }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validate() || isSubmitting) return;
 
-        setErrors(tempErrors);
-        return Object.keys(tempErrors).length === 0;
-    };
+    setIsSubmitting(true);
+    setTimeout(() => {
+      alert("Thank you! We will contact you shortly.");
+      setFormData({
+        name: "",
+        phone: "",
+        location: "",
+        requirement: "",
+      });
+      setErrors({});
+      setIsSubmitting(false);
+    }, 1200);
+  };
 
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData({ ...formData, [id]: value });
-        setErrors({ ...errors, [id]: '' });
-    };
+  return (
+    <>
+      {/* 🔹 COPY TOAST */}
+      {toast && <div className="copy-toast">{toast}</div>}
 
-    const handlePhoneChange = (value) => {
-        setFormData({ ...formData, phone: value || '' });
-        setErrors({ ...errors, phone: '' });
-    };
+      {/* 🔹 MOBILE WHATSAPP BUTTON */}
+      {isMobile && (
+        <div className="mobile-call-buttons">
+          <a
+            href="https://wa.me/919515104922"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-call-floating"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+              alt="WhatsApp"
+              style={{ width: 28, height: 28 }}
+            />
+          </a>
+        </div>
+      )}
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!validate() || isSubmitting) return;
+      {/* CONTACT SECTION */}
+      <section id="contact" className="contact">
+        <div className="container contact-container">
+          {/* INFO */}
+          <div className="contact-info">
+            <h2>Get In Touch</h2>
+            <p>Have questions? We're here to help.</p>
 
-        setIsSubmitting(true);
-        console.log('Form submitted:', formData);
+            <div className="contact-item">
+              <div className="contact-text">
+                <h4>Phone</h4>
 
-        setTimeout(() => {
-            alert('Thank you for your message! We will get back to you soon.');
-            setFormData({
-                name: '',
-                phone: '',
-                location: '',
-                requirement: ''
-            });
-            setErrors({});
-            setIsSubmitting(false);
-        }, 1200);
-    };
-
-    return (
-        <>
-            {/* 🔹 MOBILE FLOATING BUTTONS */}
-            {isMobile && (
-                <div className="mobile-call-buttons">
-                    <a
-                        href="tel:+919515104922"
-                        className="mobile-call-floating"
-                        aria-label="Call Us"
-                    >
-                        📞
-                    </a>
-
-                    <a
-                        href="https://wa.me/919515104922"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mobile-call-floating"
-                        style={{ bottom: '170px' }}
-                        aria-label="WhatsApp Us"
-                    >
-                        💬
-                    </a>
+                <div className="copy-row">
+                  <span>+91 95151 04922</span>
+                  <button
+                    className="copy-btn"
+                    onClick={() => copyText("+919515104922")}
+                  >
+                    Copy
+                  </button>
                 </div>
-            )}
 
-            {/* CTA Banner */}
-            <section className="cta-banner">
-                <div className="container cta-container">
-                    <h2>Ready to Transform Your Home?</h2>
-                    <p>Get a free, no-obligation quote today and discover how much you could save.</p>
-                    <div className="cta-btns">
-                        <a href="#contact" className="btn btn-white">Request Free Quote</a>
-                        <a href="tel:+919515104922" className="btn btn-outline-white">Call Us Now</a>
-                    </div>
+                <div className="copy-row">
+                  <span>+91 94833 33456</span>
+                  <button
+                    className="copy-btn"
+                    onClick={() => copyText("+919483333456")}
+                  >
+                    Copy
+                  </button>
                 </div>
-            </section>
+              </div>
+            </div>
 
-            {/* Contact Section */}
-            <section id="contact" className="contact">
-                <div className="container contact-container">
+            <div className="contact-item">
+              <div className="contact-text">
+                <h4>Email</h4>
 
-                    {/* CONTACT INFO */}
-                    <div className="contact-info">
-                        <h2>Get In Touch</h2>
-                        <p>Have questions? We're here to help. Contact us for expert advice.</p>
-
-                        <div className="contact-item">
-                            <div className="contact-text">
-                                <h4>Phone</h4>
-                                <p>+91 95151 04922 / +91 94833 33456</p>
-                            </div>
-                        </div>
-
-                        <div className="contact-item">
-                            <div className="contact-text">
-                                <h4>Email</h4>
-                                <p>info@srisampatti.com</p>
-                            </div>
-                        </div>
-
-                        {/* ✅ FACTORY ADDRESS (ADDED) */}
-                        <div className="contact-item">
-                            <div className="contact-text">
-                                <h4>Factory Address</h4>
-                                <p>
-                                    Sy No. 382 (P) Pleasant Hills, Himayatsagar Road
-                                    (Near to Outer Ring Road, Exit No. 17),
-                                    Rajendranagar, Hyderabad 500030, Telangana
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="contact-item">
-                            <div className="contact-text">
-                                <h4>Business Hours</h4>
-                                <p>Mon - Sat: 9:00 AM - 7:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* CONTACT FORM */}
-                    <div className="contact-form-wrapper">
-                        <form className="contact-form" onSubmit={handleSubmit}>
-
-                            <div className="form-group">
-                                <div className="form-floating">
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        placeholder="Full Name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                    />
-                                    <label>Full Name</label>
-                                </div>
-                                {errors.name && <span className="error">{errors.name}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <div className={`form-floating phone-floating ${formData.phone ? 'has-value' : ''}`}>
-                                    <PhoneInput
-                                        international
-                                        defaultCountry="IN"
-                                        value={formData.phone}
-                                        onChange={handlePhoneChange}
-                                    />
-                                    <label>Phone Number</label>
-                                </div>
-                                {errors.phone && <span className="error">{errors.phone}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <div className="form-floating">
-                                    <input
-                                        type="text"
-                                        id="location"
-                                        placeholder="Location"
-                                        value={formData.location}
-                                        onChange={handleChange}
-                                    />
-                                    <label>Location</label>
-                                </div>
-                                {errors.location && <span className="error">{errors.location}</span>}
-                            </div>
-
-                            <div className="form-group">
-                                <div className="form-floating">
-                                    <textarea
-                                        id="requirement"
-                                        rows="4"
-                                        placeholder="Your Requirement"
-                                        value={formData.requirement}
-                                        onChange={handleChange}
-                                    />
-                                    <label>Your Requirement</label>
-                                </div>
-                                {errors.requirement && <span className="error">{errors.requirement}</span>}
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="btn btn-primary btn-full"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? "Sending..." : "Send Message"}
-                            </button>
-
-                        </form>
-                    </div>
+                <div className="copy-row">
+                  <span>info@srisampatti.com</span>
+                  <button
+                    className="copy-btn"
+                    onClick={() => copyText("info@srisampatti.com")}
+                  >
+                    Copy
+                  </button>
                 </div>
-            </section>
-        </>
-    );
+              </div>
+            </div>
+
+            <div className="contact-item">
+              <div className="contact-text">
+                <h4>Factory Address</h4>
+                <p>
+                  Sy No. 382 (P) Pleasant Hills, Himayatsagar Road,
+                  Rajendranagar, Hyderabad – 500030
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* FORM */}
+          <div className="contact-form-wrapper">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Full Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  <label>Full Name</label>
+                </div>
+                {errors.name && <span className="error">{errors.name}</span>}
+              </div>
+
+              <div className="form-group">
+                <div className="phone-row">
+                  <div className="form-floating phone-country">
+                    <input type="text" value="🇮🇳 +91" disabled />
+                    <label>Country</label>
+                  </div>
+
+                  <div className="form-floating phone-input">
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="Phone Number"
+                      value={formData.phone}
+                      onChange={handleChange}
+                    />
+                    <label>Phone Number</label>
+                  </div>
+                </div>
+                {errors.phone && <span className="error">{errors.phone}</span>}
+              </div>
+
+              <div className="form-group">
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    id="location"
+                    placeholder="Location"
+                    value={formData.location}
+                    onChange={handleChange}
+                  />
+                  <label>Location</label>
+                </div>
+                {errors.location && (
+                  <span className="error">{errors.location}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <div className="form-floating">
+                  <textarea
+                    id="requirement"
+                    rows="4"
+                    placeholder="Your Requirement"
+                    value={formData.requirement}
+                    onChange={handleChange}
+                  />
+                  <label>Your Requirement</label>
+                </div>
+                {errors.requirement && (
+                  <span className="error">{errors.requirement}</span>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-primary btn-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Contact;
